@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<!-- wild-van-radical-catalog-v1 -->
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your T-Shirt Brand | Premium Everyday Tees</title>
+  <meta name="description" content="A polished T-shirt shop prototype with inventory, cart, and checkout preview." />
+  <style>
+    :root {
+      --ink: #191713;
+      --muted: #756e63;
+      --paper: #fbf8f2;
+      --surface: #fffdf8;
+      --surface-strong: #ffffff;
+      --linen: #eee6d9;
+      --line: #ded4c4;
+      --charcoal: #131313;
+      --brand: #be5b38;
+      --brand-dark: #8f351e;
+      --sage: #526857;
+      --success: #2e6f42;
+      --warning: #9a5f04;
+      --danger: #a72b2b;
+      --shadow: 0 24px 70px rgba(35, 28, 18, 0.12);
+      --shadow-soft: 0 12px 30px rgba(35, 28, 18, 0.08);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(190, 91, 56, 0.16), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(82, 104, 87, 0.13), transparent 30rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(222, 212, 196, 0.82);
+      background: rgba(251, 248, 242, 0.9);
+      backdrop-filter: blur(16px);
+    }
+
+    .header-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-lockup { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--charcoal);
+      color: var(--surface);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      box-shadow: var(--shadow-soft);
+    }
+    .brand-name { display: grid; line-height: 1.05; }
+    .brand-name strong { font-size: 15px; letter-spacing: 0.02em; text-transform: uppercase; }
+    .brand-name span { color: var(--muted); font-size: 13px; }
+
+    .nav-links { display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 14px; font-weight: 700; }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--ink); }
+
+    .cart-pill {
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 800;
+      box-shadow: 0 8px 20px rgba(35, 28, 18, 0.06);
+    }
+    .cart-count {
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: var(--brand);
+      color: white;
+      display: inline-grid;
+      place-items: center;
+      font-size: 12px;
+    }
+
+    .hero { max-width: var(--max); margin: 0 auto; padding: 76px 22px 46px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 42px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--brand-dark); background: rgba(190, 91, 56, 0.12); border: 1px solid rgba(190, 91, 56, 0.22); border-radius: 999px; padding: 8px 12px; font-size: 13px; font-weight: 900; letter-spacing: 0.02em; text-transform: uppercase; }
+    .hero h1 { margin: 20px 0 20px; font-size: clamp(44px, 7vw, 86px); line-height: 0.91; letter-spacing: -0.07em; max-width: 760px; }
+    .hero-copy { max-width: 610px; color: var(--muted); font-size: 18px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: center; }
+
+    .btn {
+      min-height: 46px;
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 20px;
+      background: var(--charcoal);
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      box-shadow: 0 12px 26px rgba(19, 19, 19, 0.16);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 30px rgba(19, 19, 19, 0.2); }
+    .btn:focus-visible, input:focus-visible, select:focus-visible, .chip:focus-visible, .cart-pill:focus-visible { outline: 3px solid rgba(190, 91, 56, 0.34); outline-offset: 3px; }
+    .btn.secondary { color: var(--ink); background: var(--surface-strong); border: 1px solid var(--line); box-shadow: none; }
+    .btn.brand { background: var(--brand); }
+    .btn.block { width: 100%; }
+
+    .hero-note { color: var(--muted); font-size: 13px; font-weight: 700; }
+
+    .hero-showcase {
+      border: 1px solid var(--line);
+      border-radius: 38px;
+      background: linear-gradient(150deg, rgba(255,255,255,0.95), rgba(238,230,217,0.78));
+      box-shadow: var(--shadow);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-showcase:before { content: ""; position: absolute; inset: -20% -10% auto auto; width: 260px; height: 260px; border-radius: 999px; background: rgba(190, 91, 56, 0.14); filter: blur(6px); }
+    .shirt-stage { position: relative; min-height: 430px; border-radius: 28px; background: linear-gradient(180deg, #f4eee4, #e4d7c4); display: grid; place-items: center; overflow: hidden; }
+    .shirt-stage:after { content: "Limited run / photo placeholder"; position: absolute; left: 18px; bottom: 18px; color: rgba(25,23,19,0.58); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; }
+    .shirt-svg { width: min(74%, 360px); filter: drop-shadow(0 26px 24px rgba(35,28,18,0.22)); transform: rotate(-3deg); }
+    .floating-card { position: absolute; right: 22px; top: 24px; max-width: 210px; background: rgba(255,255,255,0.9); border: 1px solid rgba(222,212,196,0.88); border-radius: 20px; padding: 14px; box-shadow: var(--shadow-soft); }
+    .floating-card strong { display: block; font-size: 14px; }
+    .floating-card span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+    .trust-strip { max-width: var(--max); margin: 0 auto; padding: 0 22px 42px; }
+    .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,0.62); overflow: hidden; }
+    .trust-item { padding: 18px; border-right: 1px solid var(--line); }
+    .trust-item:last-child { border-right: 0; }
+    .trust-item strong { display: block; font-size: 14px; }
+    .trust-item span { color: var(--muted); font-size: 13px; }
+
+    section { max-width: var(--max); margin: 0 auto; padding: 58px 22px; }
+    .section-head { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 24px; }
+    .section-head h2 { margin: 0; font-size: clamp(32px, 4vw, 52px); line-height: 0.98; letter-spacing: -0.055em; }
+    .section-head p { margin: 10px 0 0; color: var(--muted); max-width: 560px; }
+
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip { min-height: 42px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-strong); padding: 9px 14px; cursor: pointer; color: var(--muted); font-weight: 900; }
+    .chip.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+    .inventory-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+    .product-card { border: 1px solid var(--line); border-radius: var(--radius-xl); background: rgba(255,255,255,0.7); overflow: hidden; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; }
+    .product-visual { min-height: 285px; display: grid; place-items: center; position: relative; overflow: hidden; background: var(--product-bg, #eee6d9); }
+    .product-visual:before { content: ""; position: absolute; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,255,255,0.32); }
+    .product-visual svg { width: 70%; max-width: 250px; position: relative; z-index: 1; filter: drop-shadow(0 18px 16px rgba(35,28,18,0.16)); }
+    .product-art { width: 82%; max-width: 255px; max-height: 260px; position: relative; z-index: 1; filter: drop-shadow(0 18px 16px rgba(35,28,18,0.16)); }
+    .image-hint { position: absolute; left: 16px; bottom: 16px; z-index: 2; background: rgba(255,255,255,0.76); border: 1px solid rgba(255,255,255,0.8); color: var(--muted); padding: 7px 10px; border-radius: 999px; font-size: 12px; font-weight: 900; }
+    .product-body { padding: 20px; display: grid; gap: 14px; flex: 1; }
+    .product-top { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .product-title { margin: 0; font-size: 21px; line-height: 1.05; letter-spacing: -0.03em; }
+    .price { font-weight: 950; font-size: 20px; white-space: nowrap; }
+    .description { margin: 0; color: var(--muted); font-size: 14px; }
+    .badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { width: fit-content; border-radius: 999px; padding: 6px 9px; font-size: 12px; font-weight: 900; }
+    .badge.stock { background: #e6f2e7; color: var(--success); }
+    .badge.low { background: #fff1d0; color: var(--warning); }
+    .badge.new { background: rgba(82, 104, 87, 0.12); color: var(--sage); }
+    .product-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field { display: grid; gap: 6px; }
+    label { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; }
+    select, input { min-height: 44px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-strong); color: var(--ink); padding: 10px 12px; }
+    .qty-field { grid-column: span 2; }
+
+    .order-layout { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 22px; align-items: start; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius-xl); background: rgba(255,255,255,0.72); box-shadow: var(--shadow-soft); padding: 24px; }
+    .panel h3 { margin: 0 0 14px; letter-spacing: -0.03em; font-size: 24px; }
+    .cart-items { display: grid; gap: 12px; }
+    .empty-cart { color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 18px; background: rgba(255,255,255,0.42); }
+    .cart-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: center; padding: 12px; border: 1px solid var(--line); background: var(--surface-strong); border-radius: 18px; }
+    .cart-thumb { width: 56px; height: 56px; border-radius: 16px; background: var(--thumb-bg); display: grid; place-items: center; font-weight: 900; color: rgba(25,23,19,0.52); }
+    .cart-item strong { display: block; }
+    .cart-item small { display: block; color: var(--muted); margin-top: 2px; }
+    .remove-btn { border: 0; background: transparent; color: var(--danger); cursor: pointer; font-weight: 900; padding: 8px; }
+    .summary-card { position: sticky; top: 92px; }
+    .summary-row { display: flex; justify-content: space-between; gap: 18px; margin: 12px 0; color: var(--muted); }
+    .summary-row strong { color: var(--ink); }
+    .summary-total { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; color: var(--ink); font-size: 22px; font-weight: 950; }
+    .promo { display: flex; gap: 8px; margin: 16px 0; }
+    .promo input { min-width: 0; }
+    .promo button { min-height: 44px; border-radius: 13px; border: 1px solid var(--line); background: var(--surface-strong); font-weight: 900; cursor: pointer; padding: 0 12px; }
+    .summary-note { color: var(--muted); font-size: 12px; margin: 12px 0 0; }
+
+    .checkout-shell { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; }
+    .stepper { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+    .step { border: 1px solid var(--line); border-radius: 16px; padding: 12px; background: var(--surface-strong); }
+    .step span { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 999px; background: var(--ink); color: white; font-size: 12px; font-weight: 900; margin-bottom: 8px; }
+    .step strong { display: block; font-size: 13px; }
+    .checkout-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .checkout-form .full { grid-column: 1 / -1; }
+    .payment-card { background: linear-gradient(160deg, #171717, #30302d); color: #fff; border: 1px solid rgba(255,255,255,0.16); border-radius: 28px; padding: 24px; box-shadow: var(--shadow); }
+    .card-chip { width: 48px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #e8c979, #9f7b2b); margin-bottom: 36px; }
+    .card-lines { display: grid; gap: 12px; }
+    .card-line { height: 14px; border-radius: 999px; background: rgba(255,255,255,0.22); }
+    .card-line.short { width: 52%; }
+    .payment-card p { color: rgba(255,255,255,0.72); font-size: 13px; margin: 20px 0 0; }
+
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 50; background: var(--ink); color: white; border-radius: 18px; padding: 14px 16px; box-shadow: var(--shadow); transform: translateY(130%); transition: transform 220ms ease; max-width: min(380px, calc(100vw - 40px)); font-weight: 800; }
+    .toast.visible { transform: translateY(0); }
+
+    footer { max-width: var(--max); margin: 0 auto; padding: 36px 22px 54px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+
+    .mobile-checkout { display: none; position: sticky; bottom: 0; z-index: 18; padding: 12px; background: rgba(251,248,242,0.92); border-top: 1px solid var(--line); backdrop-filter: blur(14px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *:before, *:after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    @media (max-width: 980px) {
+      .hero, .order-layout, .checkout-shell { grid-template-columns: 1fr; }
+      .inventory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .summary-card { position: static; }
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-item:nth-child(2) { border-right: 0; }
+      .trust-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    }
+
+    @media (max-width: 680px) {
+      .header-inner { align-items: start; }
+      .brand-name span, .nav-links { display: none; }
+      .hero { padding-top: 48px; }
+      .shirt-stage { min-height: 320px; }
+      .floating-card { left: 18px; right: 18px; top: 18px; max-width: none; }
+      .section-head { display: block; }
+      .filter-bar { margin-top: 18px; }
+      .inventory-grid, .trust-grid { grid-template-columns: 1fr; }
+      .trust-item { border-right: 0; border-bottom: 1px solid var(--line); }
+      .trust-item:last-child { border-bottom: 0; }
+      .product-controls, .checkout-form, .stepper { grid-template-columns: 1fr; }
+      .qty-field, .checkout-form .full { grid-column: auto; }
+      .cart-item { grid-template-columns: 48px 1fr; }
+      .cart-item > div:last-child { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; }
+      footer { padding-bottom: 84px; }
+      .mobile-checkout { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#top" class="brand-lockup" aria-label="Your T-Shirt Brand home">
+        <span class="brand-mark">YT</span>
+        <span class="brand-name"><strong>Your T-Shirt Brand</strong><span>Small batch everyday tees</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#inventory">Shop</a>
+        <a href="#order">Cart</a>
+        <a href="#checkout">Checkout</a>
+      </nav>
+      <button class="cart-pill" type="button" onclick="jumpToCart()" aria-label="View cart">
+        Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <span class="eyebrow">New shop prototype</span>
+        <h1 id="hero-title">Clean T-shirts, clear shopping, easy checkout.</h1>
+        <p class="hero-copy">This improved version gives shoppers a stronger first impression, clearer inventory browsing, a persistent cart, and a more trustworthy checkout preview while leaving room for your real photos and payment setup.</p>
+        <div class="hero-actions">
+          <a class="btn brand" href="#inventory">Shop the collection</a>
+          <a class="btn secondary" href="#checkout">Preview checkout</a>
+          <span class="hero-note">No live payments yet — visual checkout only.</span>
+        </div>
+      </div>
+
+      <div class="hero-showcase" aria-label="Featured T-shirt preview">
+        <div class="shirt-stage">
+          <div class="floating-card"><strong>Recommendation implemented</strong><span>Use polished placeholders now, then swap in real product photos later.</span></div>
+          <svg class="shirt-svg" viewBox="0 0 420 420" role="img" aria-label="T-shirt illustration">
+            <path d="M145 63l42 35h47l42-35 86 43-36 92-49-18v174H143V180l-49 18-36-92 87-43z" fill="#171717"/>
+            <path d="M186 98c9 12 39 12 48 0" fill="none" stroke="#f4eee4" stroke-width="12" stroke-linecap="round"/>
+            <text x="210" y="226" text-anchor="middle" fill="#f4eee4" font-size="42" font-weight="900" font-family="Arial, sans-serif">BRAND</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip" aria-label="Store highlights">
+      <div class="trust-grid">
+        <div class="trust-item"><strong>Clear inventory</strong><span>Stock badges show urgency without hiding details.</span></div>
+        <div class="trust-item"><strong>Fast ordering</strong><span>Size, color, and quantity are selected on each product card.</span></div>
+        <div class="trust-item"><strong>Cart memory</strong><span>Your sample cart stays after refresh using browser storage.</span></div>
+        <div class="trust-item"><strong>Payment-ready</strong><span>Checkout is visually prepared for Stripe, Square, PayPal, or Shopify.</span></div>
+      </div>
+    </div>
+
+    <section id="inventory" aria-labelledby="inventory-title">
+      <div class="section-head">
+        <div>
+          <h2 id="inventory-title">Inventory review</h2>
+          <p>Filter the collection, review stock, and add items to the order. Replace the illustrated placeholders with your real T-shirt photography later.</p>
+        </div>
+        <div class="filter-bar" aria-label="Product filters">
+          <button class="chip active" type="button" data-filter="all">All</button>
+          <button class="chip" type="button" data-filter="core">Core</button>
+          <button class="chip" type="button" data-filter="limited">Limited</button>
+          <button class="chip" type="button" data-filter="graphic">Graphic</button>
+        </div>
+      </div>
+      <div class="inventory-grid" id="productGrid"></div>
+    </section>
+
+    <section id="order" aria-labelledby="order-title">
+      <div class="section-head">
+        <div>
+          <h2 id="order-title">Order interface</h2>
+          <p>A cleaner cart with thumbnails, editable quantities by removing/re-adding, promo-code placeholder, and a checkout call-to-action.</p>
+        </div>
+      </div>
+      <div class="order-layout">
+        <div class="panel">
+          <h3>Your cart</h3>
+          <div class="cart-items" id="cartItems"></div>
+        </div>
+        <aside class="panel summary-card" aria-label="Order summary">
+          <h3>Order summary</h3>
+          <div class="promo">
+            <input id="promoCode" type="text" placeholder="Promo code later" aria-label="Promo code" />
+            <button type="button" onclick="applyPromo()">Apply</button>
+          </div>
+          <div class="summary-row"><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+          <div class="summary-row"><span>Estimated shipping</span><strong id="shipping">$0.00</strong></div>
+          <div class="summary-row"><span>Estimated tax</span><strong id="tax">$0.00</strong></div>
+          <div class="summary-row summary-total"><span>Total</span><strong id="total">$0.00</strong></div>
+          <a class="btn brand block" href="#checkout">Continue to checkout</a>
+          <p class="summary-note">Totals are estimates for prototype use. Real tax, shipping, and payment details can be connected later.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="checkout" aria-labelledby="checkout-title">
+      <div class="section-head">
+        <div>
+          <h2 id="checkout-title">Checkout preview</h2>
+          <p>A more realistic checkout visual builds confidence without collecting real financial information yet.</p>
+        </div>
+      </div>
+      <div class="checkout-shell">
+        <div class="panel">
+          <div class="stepper" aria-label="Checkout steps">
+            <div class="step"><span>1</span><strong>Shipping</strong></div>
+            <div class="step"><span>2</span><strong>Payment visual</strong></div>
+            <div class="step"><span>3</span><strong>Review</strong></div>
+          </div>
+          <h3>Customer information</h3>
+          <form class="checkout-form" id="checkoutForm">
+            <div class="field"><label for="firstName">First name</label><input id="firstName" name="firstName" autocomplete="given-name" required placeholder="Jane" /></div>
+            <div class="field"><label for="lastName">Last name</label><input id="lastName" name="lastName" autocomplete="family-name" required placeholder="Smith" /></div>
+            <div class="field full"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required placeholder="jane@example.com" /></div>
+            <div class="field full"><label for="address">Shipping address</label><input id="address" name="address" autocomplete="street-address" required placeholder="123 Main Street" /></div>
+            <div class="field"><label for="city">City</label><input id="city" name="city" autocomplete="address-level2" required placeholder="Atlanta" /></div>
+            <div class="field"><label for="state">State</label><input id="state" name="state" autocomplete="address-level1" required placeholder="GA" /></div>
+            <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" autocomplete="postal-code" required placeholder="30301" /></div>
+            <div class="field"><label for="country">Country</label><select id="country" name="country"><option>United States</option><option>Canada</option><option>United Kingdom</option></select></div>
+            <div class="full"><button class="btn brand block" type="submit">Create order preview</button></div>
+          </form>
+        </div>
+        <aside class="payment-card" aria-label="Payment placeholder">
+          <div class="card-chip"></div>
+          <div class="card-lines">
+            <div class="card-line"></div>
+            <div class="card-line"></div>
+            <div class="card-line short"></div>
+          </div>
+          <p><strong>Financial details later.</strong><br />This card is a visual placeholder only. Add Stripe Checkout, PayPal, Square, Shopify, or another payment provider when you are ready to take real orders.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="mobile-checkout"><a class="btn brand block" href="#order">View cart · <span id="mobileTotal">$0.00</span></a></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <footer>
+    <span>&copy; 2026 Your T-Shirt Brand. Draft storefront prototype.</span>
+    <span>Product photos, policies, and payment provider can be added next.</span>
+  </footer>
+
+  <script>
+    let products = [
+      { id: "classic-black", name: "Classic Black Tee", price: 25, category: "core", stock: 25, status: "In stock", badge: "Core fit", colors: ["Black", "Charcoal", "White"], sizes: ["S", "M", "L", "XL", "XXL"], description: "Soft cotton everyday T-shirt with a clean minimal look.", bg: "linear-gradient(135deg, #d8d0c2, #a99a87)", shirt: "#171717", print: "#f8f3ea" },
+      { id: "vintage-cream", name: "Vintage Cream Tee", price: 28, category: "limited", stock: 8, status: "Low stock", badge: "Limited run", colors: ["Cream", "Sand", "Off White"], sizes: ["S", "M", "L", "XL"], description: "Relaxed-fit cream T-shirt with a vintage-inspired finish.", bg: "linear-gradient(135deg, #eee5d4, #cdbb9e)", shirt: "#f5ead6", print: "#593928" },
+      { id: "graphic-logo", name: "Graphic Logo Tee", price: 32, category: "graphic", stock: 15, status: "In stock", badge: "Graphic", colors: ["White", "Black", "Navy"], sizes: ["S", "M", "L", "XL"], description: "Statement T-shirt featuring your brand artwork or logo.", bg: "linear-gradient(135deg, #d7e0d4, #879a86)", shirt: "#f8f7f2", print: "#111111" },
+      { id: "washed-navy", name: "Washed Navy Tee", price: 30, category: "core", stock: 18, status: "In stock", badge: "New color", colors: ["Navy", "Faded Blue", "Slate"], sizes: ["S", "M", "L", "XL"], description: "Garment-washed blue tee with a softer broken-in feel.", bg: "linear-gradient(135deg, #d7dde2, #778798)", shirt: "#26364c", print: "#eef3f5" }
+    ];
+
+    let cart = JSON.parse(localStorage.getItem("tshirtCartV2") || "[]");
+    let activeFilter = "all";
+
+    const money = value => `$${value.toFixed(2)}`;
+
+    function normalizeProduct(product, index = 0) {
+      const palettes = [
+        { bg: "linear-gradient(135deg, #d8d0c2, #a99a87)", shirt: "#171717", print: "#f8f3ea" },
+        { bg: "linear-gradient(135deg, #eee5d4, #cdbb9e)", shirt: "#f5ead6", print: "#593928" },
+        { bg: "linear-gradient(135deg, #d7e0d4, #879a86)", shirt: "#f8f7f2", print: "#111111" },
+        { bg: "linear-gradient(135deg, #d7dde2, #778798)", shirt: "#26364c", print: "#eef3f5" }
+      ];
+      const palette = palettes[index % palettes.length];
+      return {
+        ...palette,
+        ...product,
+        price: product.price ?? ((product.price_cents || 0) / 100),
+        category: product.category || "core",
+        status: product.status || (product.stock <= 10 ? "Low stock" : "In stock"),
+        badge: product.badge || product.category || "Printful ready",
+        description: product.description || "Custom print-on-demand T-shirt ready for your artwork.",
+      };
+    }
+
+    async function loadProductsFromBackend() {
+      const sources = ["/api/products", "products.radical-vans.json"];
+      let loadedProducts = null;
+
+      for (const source of sources) {
+        try {
+          const response = await fetch(source);
+          if (!response.ok) throw new Error(`${source} unavailable`);
+          const data = await response.json();
+          const candidateProducts = Array.isArray(data) ? data : data.products;
+          if (Array.isArray(candidateProducts) && candidateProducts.length) {
+            loadedProducts = candidateProducts;
+            break;
+          }
+        } catch (error) {
+          // Try the next source. GitHub Pages uses the static JSON file;
+          // the Python backend uses /api/products.
+        }
+      }
+
+      if (loadedProducts) {
+        products = loadedProducts.map(normalizeProduct);
+        cart = cart.filter(item => products.some(product => product.id === item.productId));
+        saveCart();
+      } else {
+        products = products.map(normalizeProduct);
+      }
+      renderProducts();
+      renderCart();
+    }
+
+    function shirtSvg(product) {
+      if (product.artwork_url) {
+        return `<img class="product-art" src="${product.artwork_url}" alt="${product.name} T-shirt front design">`;
+      }
+      return `<svg viewBox="0 0 420 420" role="img" aria-label="${product.name} placeholder illustration"><path d="M145 63l42 35h47l42-35 86 43-36 92-49-18v174H143V180l-49 18-36-92 87-43z" fill="${product.shirt}"/><path d="M186 98c9 12 39 12 48 0" fill="none" stroke="${product.print}" stroke-width="12" stroke-linecap="round" opacity="0.85"/><text x="210" y="226" text-anchor="middle" fill="${product.print}" font-size="38" font-weight="900" font-family="Arial, sans-serif">BRAND</text></svg>`;
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("productGrid");
+      const visible = products.filter(product => activeFilter === "all" || product.category === activeFilter);
+      grid.innerHTML = visible.map(product => {
+        const low = product.stock <= 10;
+        return `
+          <article class="product-card" style="--product-bg: ${product.bg}">
+            <div class="product-visual">
+              ${shirtSvg(product)}
+              <span class="image-hint">Photo slot</span>
+            </div>
+            <div class="product-body">
+              <div class="product-top"><h3 class="product-title">${product.name}</h3><div class="price">${money(product.price)}</div></div>
+              <p class="description">${product.description}</p>
+              <div class="badge-row"><span class="badge ${low ? "low" : "stock"}">${product.status}: ${product.stock}</span><span class="badge new">${product.badge}</span></div>
+              <div class="product-controls">
+                <div class="field"><label for="${product.id}-size">Size</label><select id="${product.id}-size">${product.sizes.map(size => `<option>${size}</option>`).join("")}</select></div>
+                <div class="field"><label for="${product.id}-color">Color</label><select id="${product.id}-color">${product.colors.map(color => `<option>${color}</option>`).join("")}</select></div>
+                <div class="field qty-field"><label for="${product.id}-qty">Quantity</label><input id="${product.id}-qty" type="number" min="1" max="${product.stock}" value="1" /></div>
+              </div>
+              <button class="btn block" type="button" onclick="addToCart('${product.id}')">Add to cart</button>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    function saveCart() { localStorage.setItem("tshirtCartV2", JSON.stringify(cart)); }
+
+    function addToCart(productId) {
+      const product = products.find(item => item.id === productId);
+      const size = document.getElementById(`${productId}-size`).value;
+      const color = document.getElementById(`${productId}-color`).value;
+      const quantity = Number(document.getElementById(`${productId}-qty`).value);
+      if (!quantity || quantity < 1 || quantity > product.stock) { showToast(`Choose a quantity between 1 and ${product.stock}.`); return; }
+      const existing = cart.find(item => item.productId === productId && item.size === size && item.color === color);
+      if (existing) existing.quantity = Math.min(existing.quantity + quantity, product.stock);
+      else cart.push({ lineId: `${productId}-${size}-${color}-${Date.now()}`, productId, size, color, quantity });
+      saveCart();
+      renderCart();
+      showToast(`${product.name} added to cart.`);
+    }
+
+    function removeFromCart(lineId) {
+      cart = cart.filter(item => item.lineId !== lineId);
+      saveCart();
+      renderCart();
+      showToast("Item removed from cart.");
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cartItems");
+      const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById("cartCount").textContent = cartCount;
+
+      if (!cart.length) {
+        cartItems.innerHTML = `<div class="empty-cart">Your cart is empty. Add a T-shirt from the inventory section to preview the checkout flow.</div>`;
+      } else {
+        cartItems.innerHTML = cart.map(item => {
+          const product = products.find(product => product.id === item.productId);
+          const lineTotal = product.price * item.quantity;
+          return `<div class="cart-item">
+            <div class="cart-thumb" style="--thumb-bg: ${product.bg}">T</div>
+            <div><strong>${product.name}</strong><small>${item.color} / ${item.size} / Qty ${item.quantity}</small><small>${money(product.price)} each</small></div>
+            <div><strong>${money(lineTotal)}</strong><button class="remove-btn" type="button" onclick="removeFromCart('${item.lineId}')">Remove</button></div>
+          </div>`;
+        }).join("");
+      }
+
+      const subtotal = cart.reduce((sum, item) => {
+        const product = products.find(product => product.id === item.productId);
+        return sum + product.price * item.quantity;
+      }, 0);
+      const shipping = subtotal > 0 ? (subtotal >= 75 ? 0 : 6.99) : 0;
+      const tax = subtotal * 0.07;
+      const total = subtotal + shipping + tax;
+      document.getElementById("subtotal").textContent = money(subtotal);
+      document.getElementById("shipping").textContent = shipping === 0 && subtotal > 0 ? "Free" : money(shipping);
+      document.getElementById("tax").textContent = money(tax);
+      document.getElementById("total").textContent = money(total);
+      document.getElementById("mobileTotal").textContent = money(total);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("visible"), 2600);
+    }
+
+    function jumpToCart() { document.getElementById("order").scrollIntoView({ behavior: "smooth" }); }
+
+    function applyPromo() { showToast("Promo-code support is ready as a placeholder for a future discount system."); }
+
+    document.querySelectorAll(".chip").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("active"));
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        renderProducts();
+      });
+    });
+
+    function collectCustomer(form) {
+      const data = new FormData(form);
+      const countryMap = { "United States": "US", "Canada": "CA", "United Kingdom": "GB" };
+      return {
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
+        address: data.get("address"),
+        city: data.get("city"),
+        state: data.get("state"),
+        zip: data.get("zip"),
+        country: countryMap[data.get("country")] || "US"
+      };
+    }
+
+    document.getElementById("checkoutForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!cart.length) { showToast("Add at least one shirt before creating an order preview."); return; }
+      if (!event.currentTarget.reportValidity()) return;
+
+      const button = event.currentTarget.querySelector('button[type="submit"]');
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = "Preparing checkout…";
+
+      try {
+        const response = await fetch("/api/create-checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ customer: collectCustomer(event.currentTarget), cart })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Checkout could not be created.");
+        showToast(data.checkout.mode === "mock" ? "Demo checkout created. Redirecting…" : "Secure checkout created. Redirecting…");
+        window.location.href = data.checkout.url;
+      } catch (error) {
+        showToast(error.message || "Checkout failed. Please try again.");
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    });
+
+    loadProductsFromBackend();
+  </script>
+</body>
+</html>
