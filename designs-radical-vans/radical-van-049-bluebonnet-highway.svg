@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 700" role="img" aria-label="Bluebonnet Highway radically varied van t-shirt front">
+<title>Bluebonnet Highway</title><metadata>scene=bluebonnet highway; treatment=front view; composition=centered hero; no logos no trademarks</metadata>
+<rect width="560" height="700" fill="none"/>
+<g class="bluebonnet-highway scene-marker"><circle cx="415" cy="140" r="44" fill="#f0b25a"/><path d="M70 430l112-155 76 105 52-70 126 120z" fill="#47796e" stroke="#11343a" stroke-width="6"/><path d="M84 474c120-32 280-32 392 0" stroke="#11343a" stroke-width="7" fill="none"/></g>
+<g class="van-treatment-front-view bluebonnet-highway-van" transform="translate(120 310) scale(0.62)"><rect x="80" y="35" width="150" height="170" rx="24" fill="#e7dfce" stroke="#11343a" stroke-width="7"/><rect x="105" y="62" width="100" height="52" rx="10" fill="#b6d8d9" stroke="#11343a" stroke-width="5"/><circle cx="112" cy="210" r="25" fill="#11343a"/><circle cx="198" cy="210" r="25" fill="#11343a"/><rect x="96" y="132" width="118" height="28" rx="8" fill="#f0b25a" stroke="#11343a" stroke-width="4"/></g>
+</svg>
